@@ -2,7 +2,9 @@ package exercise;
 
 import io.javalin.Javalin;
 import exercise.model.User;
+
 import static io.javalin.rendering.template.TemplateUtil.model;
+
 import io.javalin.rendering.template.JavalinJte;
 
 import java.util.List;
@@ -30,8 +32,8 @@ public final class App {
             // Get user ID from the path parameter
             long id = ctx.pathParamAsClass("id", Long.class).get();
             Optional<User> userOpt = USERS.stream()
-                                          .filter(user -> user.getId() == id)
-                                          .findFirst();
+                    .filter(user -> user.getId() == id)
+                    .findFirst();
 
             if (userOpt.isPresent()) {
                 User user = userOpt.get();

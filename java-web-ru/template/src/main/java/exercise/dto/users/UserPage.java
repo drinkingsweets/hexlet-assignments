@@ -10,19 +10,19 @@ public class UserPage {
         this.user = user;
     }
 
-    public long getId(){
+    public long getId() {
         return user.getId();
     }
 
-    public String getFirstName(){
+    public String getFirstName() {
         return user.getFirstName();
     }
 
-    public String getLastName(){
+    public String getLastName() {
         return user.getLastName();
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return user.getEmail();
     }
 }
