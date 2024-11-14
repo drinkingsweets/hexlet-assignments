@@ -45,6 +45,10 @@ public final class App {
             }
         });
 
+        app.get("/", ctx -> {
+            ctx.render("index.jte", model("USERS", USERS));
+        });
+
         return app;
     }
 
