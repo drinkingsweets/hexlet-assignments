@@ -2,34 +2,59 @@
 @import java.util.List
 @param List<User> USERS
 
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
-          crossorigin="anonymous">
-    <title>Users</title>
-  </head>
-  <body>
-    <div class="mx-auto p-4 py-md-5">
-      <main>
-        <a href="/users">Пользователи</a>
-      </main>
-      @if(USERS != null)
-        @for(User user : USERS)
-           <div>
-               <h2>
-                 <a href="/users/${user.getId()}">
-                   ${user.getFirstName()} ${user.getLastName()}<br>
-                 </a>
-               </h2>
-           </div>
-        @endfor
-      @else
-        <p>No users available.</p>
-      @endif
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px;">
+        <h1>User List</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(User user : USERS)
+                    <tr>
+                        <td>${user.getId()}</td>
+                        <td>${user.getFirstName()}</td>
+                        <td>${user.getLastName()}</td>
+                        <td>${user.getEmail()}</td>
+                        <td><a href="/users/${user.getId()}">View Details</a></td>
+                    </tr>
+                @endfor
+            </tbody>
+        </table>
     </div>
-  </body>
+</body>
 </html>
