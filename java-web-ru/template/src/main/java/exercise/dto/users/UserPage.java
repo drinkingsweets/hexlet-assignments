@@ -3,7 +3,7 @@ package exercise.dto.users;
 import exercise.model.User;
 
 // BEIN
-public class UserPage{
+public class UserPage {
     User user;
 
     public UserPage(User user) {

@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 // BEGIN
-public class UsersPage{
+public class UsersPage {
     private List<User> users;
     public UsersPage(List<User> users){
         this.users = users;
