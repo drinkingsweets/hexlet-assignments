@@ -1,7 +1,9 @@
 @import exercise.model.User
+@import gg.jte.Content
 @import java.util.List
 @param List<User> USERS
 @param String term
+@param Content content
 
 <html lang="en">
 <head>
@@ -24,6 +26,7 @@
         @for (User user: USERS)
             <li>${user.getFirstName() + " " + user.getLastName()}</li>
         @endfor
+        ${content}
     </main>
 </div>
 </body>
