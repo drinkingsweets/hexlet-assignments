@@ -1,5 +1,7 @@
 package exercise;
 
+import gg.jte.html.HtmlContent;
+import gg.jte.html.HtmlTemplateOutput;
 import io.javalin.Javalin;
 
 import java.util.HashMap;
@@ -8,6 +10,7 @@ import java.util.Map;
 
 import exercise.model.User;
 import io.javalin.rendering.template.JavalinJte;
+import org.eclipse.jetty.server.HttpInput;
 
 public final class App {
 
@@ -29,9 +32,12 @@ public final class App {
                 data.put("USERS", USERS.stream().filter(user -> user.
                         getFirstName().toLowerCase().contains(term.toLowerCase())).toList());
                 data.put("term", term);
+                data.put("content", "");
             } else {
                 data.put("USERS", USERS);
                 data.put("term", "");
+                data.put("content", "");
+
 
             }
             ctx.render("layout/page.jte", data);

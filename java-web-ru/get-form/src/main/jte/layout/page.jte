@@ -3,7 +3,7 @@
 @import java.util.List
 @param List<User> USERS
 @param String term
-@param Content content
+@param String content
 
 <html lang="en">
 <head>
