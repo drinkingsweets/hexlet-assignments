@@ -1,20 +1,15 @@
 package exercise;
 
-import gg.jte.html.HtmlContent;
-import gg.jte.html.HtmlTemplateOutput;
 import io.javalin.Javalin;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import exercise.model.User;
 import io.javalin.rendering.template.JavalinJte;
-import org.eclipse.jetty.server.HttpInput;
 
 public final class App {
 
-    // Каждый пользователь представлен объектом класса User
     private static final List<User> USERS = Data.getUsers();
 
     public static Javalin getApp() {
@@ -24,29 +19,29 @@ public final class App {
             config.fileRenderer(new JavalinJte());
         });
 
-        // BEGIN
+        // Handling the "/users" route
         app.get("/users", ctx -> {
             String term = ctx.queryParam("term");
-            Map<String, Object> data = new HashMap<>();
-            if (term != null) {
-                data.put("USERS", USERS.stream().filter(user -> user.
-                        getFirstName().toLowerCase().contains(term.toLowerCase())).toList());
-                data.put("term", term);
-                data.put("content", "");
-            } else {
-                data.put("USERS", USERS);
-                data.put("term", "");
-                data.put("content", "");
+            List<User> filteredUsers = USERS;
 
-
+            if (term != null && !term.isEmpty()) {
+                filteredUsers = USERS.stream()
+                        .filter(user -> user.getFirstName().toLowerCase().contains(term.toLowerCase()))
+                        .toList();
             }
-            ctx.render("layout/page.jte", data);
 
+            // Prepare the data map for the index.jte template
+            Map<String, Object> data = new HashMap<>();
+            data.put("USERS", filteredUsers);   // List<User>
+            data.put("term", term);              // String term
+
+            // Render the page with the index.jte content, passing all the required data
+            ctx.render("index.jte", data);  // Render index.jte with filtered users
         });
-        // END
 
+        // Root route ("/") for a simple welcome page
         app.get("/", ctx -> {
-            ctx.render("index.jte");
+            ctx.result("Hello");
         });
 
         return app;

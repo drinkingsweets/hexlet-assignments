@@ -1,9 +1,5 @@
-@import exercise.model.User
 @import gg.jte.Content
-@import java.util.List
-@param List<User> USERS
-@param String term
-@param String content
+@param Content content
 
 <html lang="en">
 <head>
@@ -13,21 +9,12 @@
           rel="stylesheet"
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
           crossorigin="anonymous">
-    <title>Hello Hexlet!</title>
+    <title>Hexlet Users</title>
 </head>
-<form action="/users" method="get">
-    <input type="search" required name="term" value="${term}">
-    <input type="submit" value="Искать">
-</form>
 <body>
-<div class="mx-auto p-4 py-md-5">
-    <main>
-        <h1>Users: ${USERS.size()}</h1>
-        @for (User user: USERS)
-            <li>${user.getFirstName() + " " + user.getLastName()}</li>
-        @endfor
-        ${content}
-    </main>
-</div>
+
+    <div class="content">
+        ${content}  <!-- This is where the content from the child template will be injected -->
+    </div>
 </body>
 </html>
