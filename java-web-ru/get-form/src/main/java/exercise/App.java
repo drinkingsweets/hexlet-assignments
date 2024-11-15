@@ -27,7 +27,7 @@ public final class App {
             Map<String, Object> data = new HashMap<>();
             if (term != null) {
                 data.put("USERS", USERS.stream().filter(user -> user.
-                        getFirstName().toLowerCase().equals(term.toLowerCase())).toList());
+                        getFirstName().toLowerCase().contains(term.toLowerCase())).toList());
                 data.put("term", term);
             } else {
                 data.put("USERS", USERS);
