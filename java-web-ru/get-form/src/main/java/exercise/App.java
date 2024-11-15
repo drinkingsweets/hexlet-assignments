@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import exercise.model.User;
-import static io.javalin.rendering.template.TemplateUtil.model;
 import io.javalin.rendering.template.JavalinJte;
-
-import org.apache.commons.lang3.StringUtils;
 
 public final class App {
 
@@ -28,12 +25,11 @@ public final class App {
         app.get("/users", ctx -> {
             String term = ctx.queryParam("term");
             Map<String, Object> data = new HashMap<>();
-            if (term != null){
+            if (term != null) {
                 data.put("USERS", USERS.stream().filter(user -> user.
-                            getFirstName().toLowerCase().equals(term.toLowerCase())).toList());
+                        getFirstName().toLowerCase().equals(term.toLowerCase())).toList());
                 data.put("term", term);
-            }
-            else {
+            } else {
                 data.put("USERS", USERS);
                 data.put("term", "");
 
