@@ -38,38 +38,34 @@ public final class App {
 
         app.post("/users", ctx -> {
 
-            // Проверяем, содержится ли форма данных
-            if (ctx.formParamMap().isEmpty()) {
-                ctx.status(400).result("No form data submitted");
-                return;
-            }
+            // Получаем параметры формы
+            String firstName = ctx.formParam("firstName") != null ? ctx.formParam("firstName").trim() : "";
+            String secondName = ctx.formParam("secondName") != null ? ctx.formParam("secondName").trim() : "";
+            String email = ctx.formParam("email") != null ? ctx.formParam("email").trim().toLowerCase() : "";
+            String password = ctx.formParam("password") != null ? ctx.formParam("password").trim() : "";
 
-            String firstName = ctx.formParam("firstName");
-            String secondName = ctx.formParam("secondName");
-            String email = ctx.formParam("email").trim();
-            String password = ctx.formParam("password");
-
-            // Проверяем на наличие всех необходимых параметров
-            if (email == null || firstName == null || secondName == null || password == null) {
+            // Проверяем, что все обязательные параметры заполнены
+            if (email.isEmpty() || firstName.isEmpty() || secondName.isEmpty() || password.isEmpty()) {
                 ctx.status(400).result("Invalid form data");
                 return;
             }
 
             // Сохраняем пользователя
             UserRepository.save(new User(
-                firstName.toUpperCase(),
-                secondName.toUpperCase(),
-                email.toLowerCase().trim(),
-                Security.encrypt(password)
+                    firstName.toUpperCase(),
+                    secondName.toUpperCase(),
+                    email,
+                    Security.encrypt(password)
             ));
 
-            // Перенаправляем пользователя на список
+            // Перенаправляем пользователя на страницу списка
             ctx.redirect("/users");
         });
 
-                // END
 
-                return app;
+        // END
+
+        return app;
     }
 
     public static void main(String[] args) {
