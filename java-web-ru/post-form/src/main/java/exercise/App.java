@@ -37,35 +37,39 @@ public final class App {
         });
 
         app.post("/users", ctx -> {
-    // Извлечение параметров формы
-    String firstName = ctx.formParam("firstName");
-    String secondName = ctx.formParam("secondName");
-    String email = ctx.formParam("email");
-    String password = ctx.formParam("password");
 
+            // Проверяем, содержится ли форма данных
+            if (ctx.formParamMap().isEmpty()) {
+                ctx.status(400).result("No form data submitted");
+                return;
+            }
 
-    // Удаляем лишние пробелы и обрабатываем строку
-    email = email.toLowerCase().trim();
-    firstName = firstName.trim();
-    secondName = secondName.trim();
-    password = password.trim();
+            String firstName = ctx.formParam("firstName");
+            String secondName = ctx.formParam("secondName");
+            String email = ctx.formParam("email");
+            String password = ctx.formParam("password");
 
-    // Сохранение пользователя
-    User newUser = new User(
-        firstName.toUpperCase(),
-        secondName.toUpperCase(),
-        email,
-        Security.encrypt(password)
-    );
-    UserRepository.save(newUser);
+            // Проверяем на наличие всех необходимых параметров
+            if (email == null || firstName == null || secondName == null || password == null) {
+                ctx.status(400).result("Invalid form data");
+                return;
+            }
 
-    // Перенаправление на список пользователей после успешного добавления
-    ctx.redirect("/users");
-});
+            // Сохраняем пользователя
+            UserRepository.save(new User(
+                firstName.toUpperCase(),
+                secondName.toUpperCase(),
+                email.toLowerCase().trim(),
+                Security.encrypt(password)
+            ));
 
-        // END
+            // Перенаправляем пользователя на список
+            ctx.redirect("/users");
+        });
 
-        return app;
+                // END
+
+                return app;
     }
 
     public static void main(String[] args) {
