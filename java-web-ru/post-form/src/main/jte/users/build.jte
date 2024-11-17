@@ -1,7 +1,7 @@
 @template.layout.page(
     content = @`
     <h1>Add new user</h1>
-        <form action="/users/build" method="post">
+        <form action="/users" method="post">
             <input type="text" required name="firstName" placeholder="Введите имя">
             <input type="text" required name="secondName" placeholder="Введите фамилию">
             <input type="email" required name="email" placeholder="Введите почту">

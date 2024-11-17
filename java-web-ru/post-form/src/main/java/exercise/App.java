@@ -36,7 +36,7 @@ public final class App {
             ctx.render("users/build.jte");
         });
 
-        app.post("/users/build", ctx -> {
+        app.post("/users", ctx -> {
 
             String firstName = ctx.formParam("firstName").toUpperCase();
             String secondName = ctx.formParam("secondName").toUpperCase();
