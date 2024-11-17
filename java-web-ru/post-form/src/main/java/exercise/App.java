@@ -45,22 +45,22 @@ public final class App {
 
         app.post("/users", ctx -> {
 
-            // Получаем параметры формы
-            String firstName = ctx.formParam("firstName") != null ? ctx.formParam("firstName").trim() : "";
-            String secondName = ctx.formParam("secondName") != null ? ctx.formParam("secondName").trim() : "";
-            String email = ctx.formParam("email") != null ? ctx.formParam("email").trim().toLowerCase() : "";
-            String password = ctx.formParam("password") != null ? ctx.formParam("password").trim() : "";
+            // Получаем параметры формы с удалением лишних пробелов
+            String firstName = ctx.formParam("firstName") == null ? "" : ctx.formParam("firstName").trim();
+            String lastName = ctx.formParam("lastName") == null ? "" : ctx.formParam("lastName").trim();
+            String email = ctx.formParam("email") == null ? "" : ctx.formParam("email").trim().toLowerCase();
+            String password = ctx.formParam("password") == null ? "" : ctx.formParam("password").trim();
 
-            // Проверяем, что все обязательные параметры заполнены
-            if (email.isEmpty() || firstName.isEmpty() || secondName.isEmpty() || password.isEmpty()) {
+            // Проверяем обязательные параметры
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 ctx.status(400).result("Invalid form data");
                 return;
             }
 
             // Сохраняем пользователя
             UserRepository.save(new User(
-                    capitalize(firstName),
-                    capitalize(secondName),
+                    firstName.toUpperCase(),
+                    lastName.toUpperCase(),
                     email,
                     Security.encrypt(password)
             ));
