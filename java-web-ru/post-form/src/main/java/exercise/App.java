@@ -38,13 +38,18 @@ public final class App {
 
         app.post("/users", ctx -> {
 
-            String firstName = ctx.formParam("firstName").toUpperCase();
-            String secondName = ctx.formParam("secondName").toUpperCase();
-            String email = ctx.formParam("email").toLowerCase().trim();
+            String firstName = ctx.formParam("firstName");
+            String secondName = ctx.formParam("secondName");
+            String email = ctx.formParam("email").toLowerCase();
             String password = ctx.formParam("password");
 
-            UserRepository.save(new User(firstName, secondName,
-                    email, Security.encrypt(password)));
+            if (email == null || firstName == null || secondName == null || password == null) {
+                ctx.status(400).result("Invalid form data");
+                return;
+            }
+
+            UserRepository.save(new User(firstName.toUpperCase(), secondName.toUpperCase(),
+                    email.toLowerCase().trim(), Security.encrypt(password)));
 
             ctx.redirect("/users");
         });
