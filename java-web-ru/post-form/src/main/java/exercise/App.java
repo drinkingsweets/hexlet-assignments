@@ -14,6 +14,13 @@ import exercise.util.Security;
 
 public final class App {
 
+    public static String capitalize(String input) {
+        if (input == null || input.isEmpty()) {
+            return input; // Если строка пуста или null, возвращаем как есть
+        }
+        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
+    }
+
     public static Javalin getApp() {
 
         var app = Javalin.create(config -> {
@@ -52,8 +59,8 @@ public final class App {
 
             // Сохраняем пользователя
             UserRepository.save(new User(
-                    firstName.toUpperCase(),
-                    secondName.toUpperCase(),
+                    capitalize(firstName),
+                    capitalize(secondName),
                     email,
                     Security.encrypt(password)
             ));
