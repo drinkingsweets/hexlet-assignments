@@ -43,12 +43,6 @@ public final class App {
     String email = ctx.formParam("email");
     String password = ctx.formParam("password");
 
-    // Проверка на наличие всех параметров
-    if (firstName == null || secondName == null || email == null || password == null) {
-        // Вместо перенаправления сразу возвращаем ошибку 400
-        ctx.status(400).result("Invalid form data");
-        return;
-    }
 
     // Удаляем лишние пробелы и обрабатываем строку
     email = email.toLowerCase().trim();
