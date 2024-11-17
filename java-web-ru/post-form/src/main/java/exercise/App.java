@@ -59,8 +59,8 @@ public final class App {
 
             // Сохраняем пользователя
             UserRepository.save(new User(
-                    firstName.toUpperCase(),
-                    lastName.toUpperCase(),
+                    capitalize(firstName),
+                    capitalize(lastName),
                     email,
                     Security.encrypt(password)
             ));
