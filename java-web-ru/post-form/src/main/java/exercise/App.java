@@ -37,22 +37,38 @@ public final class App {
         });
 
         app.post("/users", ctx -> {
+    // Извлечение параметров формы
+    String firstName = ctx.formParam("firstName");
+    String secondName = ctx.formParam("secondName");
+    String email = ctx.formParam("email");
+    String password = ctx.formParam("password");
 
-            String firstName = ctx.formParam("firstName");
-            String secondName = ctx.formParam("secondName");
-            String email = ctx.formParam("email").toLowerCase();
-            String password = ctx.formParam("password");
+    // Проверка на наличие всех параметров
+    if (firstName == null || secondName == null || email == null || password == null) {
+        // Вместо перенаправления сразу возвращаем ошибку 400
+        ctx.status(400).result("Invalid form data");
+        return;
+    }
 
-            if (email == null || firstName == null || secondName == null || password == null) {
-                ctx.status(302).result("Invalid form data");
-                return;
-            }
+    // Удаляем лишние пробелы и обрабатываем строку
+    email = email.toLowerCase().trim();
+    firstName = firstName.trim();
+    secondName = secondName.trim();
+    password = password.trim();
 
-            UserRepository.save(new User(firstName.toUpperCase(), secondName.toUpperCase(),
-                    email.toLowerCase().trim(), Security.encrypt(password)));
+    // Сохранение пользователя
+    User newUser = new User(
+        firstName.toUpperCase(),
+        secondName.toUpperCase(),
+        email,
+        Security.encrypt(password)
+    );
+    UserRepository.save(newUser);
 
-            ctx.redirect("/users");
-        });
+    // Перенаправление на список пользователей после успешного добавления
+    ctx.redirect("/users");
+});
+
         // END
 
         return app;
