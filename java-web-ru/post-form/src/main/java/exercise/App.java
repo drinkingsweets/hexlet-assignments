@@ -44,7 +44,7 @@ public final class App {
             String password = ctx.formParam("password");
 
             if (email == null || firstName == null || secondName == null || password == null) {
-                ctx.status(400).result("Invalid form data");
+                ctx.status(302).result("Invalid form data");
                 return;
             }
 
