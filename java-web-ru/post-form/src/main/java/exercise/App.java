@@ -46,7 +46,7 @@ public final class App {
 
             String firstName = ctx.formParam("firstName");
             String secondName = ctx.formParam("secondName");
-            String email = ctx.formParam("email");
+            String email = ctx.formParam("email").trim();
             String password = ctx.formParam("password");
 
             // Проверяем на наличие всех необходимых параметров
