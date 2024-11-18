@@ -58,6 +58,7 @@ public final class App {
                 ArticleRepository.save(new Article(title, content));
                 ctx.redirect("/articles");
             } catch (ValidationException e) {
+                ctx.status(422);
                 BuildArticlePage error = new BuildArticlePage(title, content, e.getErrors());
                 ctx.render("articles/build.jte", model("pageBuild", error));
             }
