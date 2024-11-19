@@ -65,10 +65,8 @@ public class PostsController {
         if (post.isPresent()) {
             EditPostPage editPostPage = new EditPostPage(post.get());
             ctx.render("posts/edit.jte", model("page", editPostPage));
-        }
-
-        else {
-            ctx.status(404).result("Post not found");
+        } else {
+            ctx.status(404).result("Page not found");
         }
     }
 
