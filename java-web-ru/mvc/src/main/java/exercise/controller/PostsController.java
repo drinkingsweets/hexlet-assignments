@@ -2,6 +2,7 @@ package exercise.controller;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
+import exercise.dto.posts.EditPostPage;
 import exercise.dto.posts.PostsPage;
 import exercise.dto.posts.PostPage;
 import exercise.model.Post;
@@ -61,10 +62,10 @@ public class PostsController {
     public static void showEdit(Context ctx) {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var post = PostRepository.find(id);
+        EditPostPage editPostPage = new EditPostPage(post.get());
 
-        if (post.isPresent()) {
-            ctx.render("posts/edit.jte", model("page", post.get()));
-        }
+        ctx.render("posts/edit.jte", model("page", editPostPage));
+
 
     }
 
@@ -87,9 +88,16 @@ public class PostsController {
             ctx.redirect(NamedRoutes.postsPath());
 
         } catch (ValidationException e) {
-            var name = ctx.formParam("name");
-            var body = ctx.formParam("body");
-            var page = new BuildPostPage(name, body, e.getErrors());
+            long oldId = ctx.pathParamAsClass("id", Long.class).get();
+            Post oldPost = PostRepository.find(id).get();
+
+            String name = ctx.formParamAsClass("name", String.class).get();
+            String body = ctx.formParamAsClass("body", String.class).get();
+
+            oldPost.setName(name);
+            old.setBody(body);
+
+            var page = new EditPostPage(oldPost, e.getErrors());
             ctx.render("posts/edit.jte", model("page", page)).status(422);
         }
     }
