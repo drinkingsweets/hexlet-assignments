@@ -62,11 +62,14 @@ public class PostsController {
     public static void showEdit(Context ctx) {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var post = PostRepository.find(id);
-        EditPostPage editPostPage = new EditPostPage(post.get());
+        if (post.isPresent()) {
+            EditPostPage editPostPage = new EditPostPage(post.get());
+            ctx.render("posts/edit.jte", model("page", editPostPage));
+        }
 
-        ctx.render("posts/edit.jte", model("page", editPostPage));
-
-
+        else {
+            ctx.status(404).result("Post not found");
+        }
     }
 
     public static void makeEdit(Context ctx) {
