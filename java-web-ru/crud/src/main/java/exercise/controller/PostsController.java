@@ -3,12 +3,10 @@ package exercise.controller;
 import static io.javalin.rendering.template.TemplateUtil.model;
 
 import exercise.dto.posts.PostsPage;
-import exercise.dto.posts.PostPage;
 import exercise.model.Post;
 import exercise.repository.PostRepository;
 
 import io.javalin.http.Context;
-import io.javalin.http.NotFoundResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -29,8 +27,7 @@ public class PostsController {
         Optional<Post> post = PostRepository.find(id);
         if (post.isPresent()) {
             ctx.render("posts/show.jte", model("post", post.get()));
-        }
-        else {
+        } else {
             ctx.status(404).result("Page not found");
         }
     }
