@@ -18,7 +18,7 @@ public class ProductsRepository extends BaseRepository {
         String query = "INSERT INTO products (id, title, price) VALUES (?, ?, ?);";
 
         try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(query)) {
-            preparedStatement.setLong(1, product.getId());
+            preparedStatement.setLong(1, ProductsRepository.nextIndex());
             preparedStatement.setString(2, product.getTitle());
             preparedStatement.setInt(3, product.getPrice());
 

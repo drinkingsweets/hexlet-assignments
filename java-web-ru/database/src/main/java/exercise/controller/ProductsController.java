@@ -28,7 +28,6 @@ public class ProductsController {
                 .check(value -> value >= 0, "Цена не должна быть отрицательной")
                 .get();
             var product = new Product(title, price);
-            product.setId(ProductsRepository.nextIndex());
             ProductsRepository.save(product);
             ctx.sessionAttribute("flash", "Товар был успешно создан!");
             ctx.sessionAttribute("flash-type", "success");
