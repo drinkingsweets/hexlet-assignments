@@ -15,12 +15,12 @@ public class ProductsRepository extends BaseRepository {
 
     // BEGIN
     public static void save(Product product) {
-        String query = "INSERT INTO products (id, title, price) VALUES (?, ?, ?);";
+        // Убираем id из запроса, так как id будет автоматически сгенерирован
+        String query = "INSERT INTO products (title, price) VALUES (?, ?);";
 
         try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(query)) {
-            preparedStatement.setLong(1, ProductsRepository.nextIndex());
-            preparedStatement.setString(2, product.getTitle());
-            preparedStatement.setInt(3, product.getPrice());
+            preparedStatement.setString(1, product.getTitle());
+            preparedStatement.setInt(2, product.getPrice());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -64,22 +64,6 @@ public class ProductsRepository extends BaseRepository {
         } catch (SQLException e) {
             throw new RuntimeException("Error retrieving products: " + e.getMessage(), e);
         }
-    }
-
-    public static long nextIndex() {
-        String query = "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM products";
-
-        try (PreparedStatement statement = dataSource.getConnection().prepareStatement(query);
-             ResultSet resultSet = statement.executeQuery()) {
-
-            if (resultSet.next()) {
-                return resultSet.getLong("next_id");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error fetching next course index", e);
-        }
-
-        throw new RuntimeException("Unable to determine next course index");
     }
     // END
 }
