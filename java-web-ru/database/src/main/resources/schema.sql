@@ -1,9 +1,5 @@
--- BEGIN
-DROP TABLE IF EXISTS products;
-
-CREATE TABLE products(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    title TEXT,
-    price INT
+CREATE TABLE products (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    price INT NOT NULL CHECK (price >= 0)
 );
--- END
