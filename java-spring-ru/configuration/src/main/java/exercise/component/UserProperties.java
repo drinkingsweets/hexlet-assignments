@@ -9,16 +9,16 @@ import lombok.Setter;
 import java.util.List;
 
 @Component
-@ConfigurationProperties(prefix = "users.admins")
+@ConfigurationProperties(prefix = "users")
 public class UserProperties {
-    private static List<String> admins;
+    private List<String> admins;
 
-    public static List<String> getAdmins() {
+    public List<String> getAdmins() {
         return admins;
     }
 
-    public static void setAdmins(List<String> admins) {
-        UserProperties.admins = admins;
+    public void setAdmins(List<String> admins) {
+        this.admins = admins;
     }
 
 }

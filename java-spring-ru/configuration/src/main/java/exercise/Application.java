@@ -24,14 +24,13 @@ public class Application {
     // Все пользователи
     private List<User> users = Data.getUsers();
     @Autowired
-    UserProperties adminsInfo;
+    UserProperties adminsInfo = new UserProperties();
 
     // BEGIN
     @GetMapping("/admins")
     public List<String> admins() {
         // Получаем список email администраторов
         List<String> adminEmails = adminsInfo.getAdmins();
-
         if (adminEmails == null || adminEmails.isEmpty()) {
             return List.of(); // Если список админов пустой, возвращаем пустой результат
         }
