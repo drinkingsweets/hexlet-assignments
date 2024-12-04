@@ -30,6 +30,7 @@ public class PeopleController {
 
     // BEGIN
     @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
     public List<Person> all() {
         return personRepository.findAll();
     }
