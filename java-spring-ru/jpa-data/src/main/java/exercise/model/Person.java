@@ -20,6 +20,6 @@ public class Person {
     private String firstName;
 
     @Column
-    private String secondName;
+    private String lastName;
 }
 // END
