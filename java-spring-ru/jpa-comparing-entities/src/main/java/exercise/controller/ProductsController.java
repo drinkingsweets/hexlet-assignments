@@ -35,6 +35,10 @@ public class ProductsController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Product create(@RequestBody Product product) {
+        if (product.getId() == null) {
+        throw new IllegalArgumentException("The product ID must not be null");
+    }
+
         productRepository.findById(product.getId()).ifPresent(existingProduct -> {
             throw new ResourceAlreadyExistsException("Product with ID " + product.getId() + " already exists");
         });
