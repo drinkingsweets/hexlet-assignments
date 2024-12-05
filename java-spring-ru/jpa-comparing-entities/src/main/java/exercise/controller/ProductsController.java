@@ -38,7 +38,7 @@ public class ProductsController {
         var found = productRepository.findById(product.getId());
         if (found.isPresent() && found.get().getTitle().equals(product.getTitle()) &&
         found.get().getPrice() == product.getPrice()
-        && found.get().getId() - 1 == product.getId()) {
+        && found.get().getId() + 1 == product.getId()) {
         throw new ResourceAlreadyExistsException("Product with ID " + product.getId() + " already exists");
         }
     return productRepository.save(product);
