@@ -33,6 +33,7 @@ public class ProductsController {
 
     // BEGIN
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Product create(@RequestBody Product product) {
         if (productRepository.findById(product.getId()).isPresent()){
             throw new ResourceAlreadyExistsException("Product with ID " + product.getId() + " already" +
