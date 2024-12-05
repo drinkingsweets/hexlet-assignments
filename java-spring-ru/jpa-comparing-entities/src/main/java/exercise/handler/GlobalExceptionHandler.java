@@ -21,8 +21,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // BEGIN
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String handleResourceAlreadyExistsException(ResourceAlreadyExistsException e) {
-        return e.getMessage();
+    public ResponseEntity<String> handleResourceAlreadyExistsException(ResourceAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
     // END
 }
