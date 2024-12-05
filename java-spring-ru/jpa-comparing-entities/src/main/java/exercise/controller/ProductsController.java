@@ -38,7 +38,7 @@ public class ProductsController {
         List<Product> products = productRepository.findAll();
 
         for (Product current: products) {
-            if (
+            if (current.getTitle() != null &&
             current.getTitle().equals(product.getTitle()) &&
             current.getPrice() == product.getPrice()) {
                 throw new ResourceAlreadyExistsException("Product with ID " + current.getId() + " already" +
