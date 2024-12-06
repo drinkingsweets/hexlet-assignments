@@ -48,10 +48,14 @@ public class TasksController {
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Task update(@PathVariable long id) {
-        var found = taskRepository.findById(id)
+    public Task update(@PathVariable long id, @RequestBody Task updatedTask) {
+        return taskRepository.findById(id)
+                .map(existingTask -> {
+                    existingTask.setTitle(updatedTask.getTitle());
+                    existingTask.setDescription(updatedTask.getDescription());
+                    return taskRepository.save(existingTask);
+                })
                 .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
-        return found;
     }
     // END
 
