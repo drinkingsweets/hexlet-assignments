@@ -46,6 +46,7 @@ public class TasksController {
     }
 
     @PutMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public Task update(@PathVariable long id) {
         var found = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
