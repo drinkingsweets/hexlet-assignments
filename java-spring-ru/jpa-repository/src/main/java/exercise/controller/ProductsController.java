@@ -34,7 +34,7 @@ public class ProductsController {
 
     @GetMapping
     public List<Product> entities(@RequestParam(defaultValue = "0") Long min,
-                                  @RequestParam(defaultValue = "-1") Long max) {
+                                  @RequestParam(defaultValue = "10000") Long max) {
         if (max == -1) {
             max = productRepository.count();
         }
