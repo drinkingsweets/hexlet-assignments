@@ -34,8 +34,9 @@ public class CommentsController {
     }
 
     @GetMapping(path = "/{id}")
-    Optional<Comment> exact(@PathVariable long id) {
-        return commentRepository.findById(id);
+    Comment exact(@PathVariable long id) {
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post " + id + " not found."));
     }
 
     @PostMapping

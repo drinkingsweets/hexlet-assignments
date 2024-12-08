@@ -32,8 +32,9 @@ public class PostsController {
     }
 
     @GetMapping(path = "/{id}")
-    Optional<Post> exact(@PathVariable long id) {
-        return postRepository.findById(id);
+    Post exact(@PathVariable long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post " + id + " not found."));
     }
 
     @PostMapping
