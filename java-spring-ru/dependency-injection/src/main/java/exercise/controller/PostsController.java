@@ -26,6 +26,9 @@ public class PostsController {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     @GetMapping
     List<Post> show() {
         return postRepository.findAll();
@@ -54,6 +57,7 @@ public class PostsController {
 
     @DeleteMapping(path = "/{id}")
     void delete(@PathVariable long id) {
+        commentRepository.deleteByPostId(id);
         postRepository.deleteById(id);
     }
 
