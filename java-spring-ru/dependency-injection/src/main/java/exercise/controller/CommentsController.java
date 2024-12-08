@@ -23,7 +23,7 @@ import exercise.exception.ResourceNotFoundException;
 
 // BEGIN
 @RestController
-@RequestMapping(path = "/posts")
+@RequestMapping(path = "/comments")
 public class CommentsController {
     @Autowired
     private CommentRepository commentRepository;
