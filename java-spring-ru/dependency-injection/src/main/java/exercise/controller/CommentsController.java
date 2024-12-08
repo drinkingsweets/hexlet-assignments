@@ -56,7 +56,7 @@ public class CommentsController {
 
     @DeleteMapping(path = "/{id}")
     void delete(@PathVariable long id) {
-        commentRepository.deleteById(id);
+        commentRepository.deleteByPostId(id);
     }
 
 }
