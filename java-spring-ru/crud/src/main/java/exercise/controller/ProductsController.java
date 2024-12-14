@@ -59,9 +59,8 @@ public class ProductsController {
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDTO create(@Valid @RequestBody ProductCreateDTO dto) {
     // Validate that the category exists
-    if (!dto.getCategoryId().isPresent() || !categoryRepository.existsById(dto.getCategoryId().get())) {
-        throw new ResourceNotFoundException("Category with ID " + dto.getCategoryId().orElse(null) + " does not exist");
-    }
+    var category = categoryRepository.findById(dto.getCategoryId().get())
+            .orElseThrow(() -> new ResourceNotFoundException("Category with id " + dto.getCategoryId().get() + " not found"));
 
     Product product = productMapper.map(dto);
     productRepository.save(product);
