@@ -11,6 +11,7 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 // BEGIN
 @Mapper(
@@ -30,14 +31,23 @@ public abstract class ProductMapper {
     @Mapping(target = "category", expression = "java(updateCategory(dto.getCategoryId(), product.getCategory()))")
     public abstract Product update(ProductUpdateDTO dto, @MappingTarget Product product);
 
-    protected Category updateCategory(Long newCategoryId, Category currentCategory) {
-        if (newCategoryId == null || (currentCategory != null && currentCategory.getId() == newCategoryId)) {
-            return currentCategory; // Keep existing category if unchanged
-        }
-        // Create a new reference for the updated category
-        var category = new Category();
-        category.setId(newCategoryId);
-        return category;
+
+    protected Category updateCategory(JsonNullable<Long> categoryIdNullable, Category currentCategory) {
+    if (categoryIdNullable == null || !categoryIdNullable.isPresent()) {
+        // If categoryId is not provided or explicitly null, keep the current category
+        return currentCategory;
     }
+
+    Long newCategoryId = categoryIdNullable.get();
+    if (currentCategory != null && currentCategory.getId() == newCategoryId) {
+        // If the new category ID matches the current one, no changes needed
+        return currentCategory;
+    }
+
+    // Otherwise, create a new Category reference
+    var category = new Category();
+    category.setId(newCategoryId);
+    return category;
+}
 }
 // END
