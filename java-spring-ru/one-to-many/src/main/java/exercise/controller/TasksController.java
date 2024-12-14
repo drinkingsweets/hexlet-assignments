@@ -66,16 +66,25 @@ public class TasksController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    TaskDTO update(@Valid @RequestBody TaskUpdateDTO dto, @PathVariable long id) {
+        TaskDTO update(@Valid @RequestBody TaskUpdateDTO dto, @PathVariable long id) {
         var task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
-        tm.update(dto, task);
+
+        // Обновление данных задачи
+        task.setTitle(dto.getTitle());
+        task.setDescription(dto.getDescription());
+
+        // Обновление assignee
+        var assignee = userRepository.findById(dto.getAssigneeId())
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + dto.getAssigneeId() + " not found"));
+        task.setAssignee(assignee);
+
         taskRepository.save(task);
         return tm.map(task);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable long id) {
         taskRepository.deleteById(id);
     }
