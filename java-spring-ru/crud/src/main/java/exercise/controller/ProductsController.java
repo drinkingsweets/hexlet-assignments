@@ -7,6 +7,7 @@ import exercise.dto.ProductDTO;
 import exercise.dto.ProductUpdateDTO;
 import exercise.mapper.ProductMapper;
 import exercise.model.Product;
+import exercise.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +34,10 @@ public class ProductsController {
     private ProductMapper productMapper;
 
     // BEGIN
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ProductDTO> index() {
@@ -53,7 +58,11 @@ public class ProductsController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDTO create(@Valid @RequestBody ProductCreateDTO dto) {
+        var category = categoryRepository.findById(dto.getCategoryId())
+            .orElseThrow(() -> new ResourceNotFoundException("Category with id " + dto.getCategoryId() + " not found"));
+
         Product product = productMapper.map(dto);
+        product.setCategory(category);
         productRepository.save(product);
         return productMapper.map(product);
     }
