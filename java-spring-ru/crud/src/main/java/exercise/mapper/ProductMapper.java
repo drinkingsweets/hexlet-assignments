@@ -20,6 +20,7 @@ import org.mapstruct.ReportingPolicy;
 )
 public abstract class ProductMapper {
     @Mapping(target = "categoryName", source = "category.name")
+    @Mapping(target = "categoryId", source = "category.id")
     public abstract ProductDTO map(Product product);
 
     @Mapping(target = "category.id", source = "categoryId")
