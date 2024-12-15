@@ -35,7 +35,7 @@ public class ProductSpecification {
             }
 
             if (dto.getPriceGt() != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), dto.getPriceGt()));
+                predicates.add(criteriaBuilder.greaterThan(root.get("price"), dto.getPriceGt()));
             }
 
             if (dto.getRatingGt() != null) {
