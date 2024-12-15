@@ -8,6 +8,7 @@ import exercise.dto.ProductUpdateDTO;
 import exercise.mapper.ProductMapper;
 import exercise.model.Product;
 import exercise.repository.CategoryRepository;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -60,7 +61,8 @@ public class ProductsController {
     public ProductDTO create(@Valid @RequestBody ProductCreateDTO dto) {
     // Validate that the category exists
     var category = categoryRepository.findById((long) dto.getCategoryId().get())
-            .orElseThrow(() -> new ResourceNotFoundException("Category with id " + dto.getCategoryId().get() + " not found"));
+            .orElseThrow(() -> new ConstraintViolationException(
+                "Invalid category ID: " + dto.getCategoryId().get(), null));
 
     Product product = productMapper.map(dto);
     productRepository.save(product);
@@ -70,6 +72,10 @@ public class ProductsController {
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProductDTO update(@Valid @RequestBody ProductUpdateDTO dto, @PathVariable long id) {
+        var category = categoryRepository.findById((long) dto.getCategoryId().get())
+            .orElseThrow(() -> new ConstraintViolationException(
+                "Invalid category ID: " + dto.getCategoryId().get(), null));
+
         var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product with id " + id + " not found"));
         product = productMapper.update(dto, product);
