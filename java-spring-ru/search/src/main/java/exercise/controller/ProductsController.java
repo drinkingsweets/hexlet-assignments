@@ -1,6 +1,7 @@
 package exercise.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import exercise.dto.ProductCreateDTO;
 import exercise.dto.ProductDTO;
@@ -41,14 +42,20 @@ public class ProductsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    Page<ProductDTO> index(ProductParamsDTO dto, @RequestParam(defaultValue = "1") int page){
+    List<ProductDTO> index(ProductParamsDTO dto, @RequestParam(defaultValue = "1") int page){
         var spec = specification.build(dto);
-        var products = productRepository.findAll(spec, PageRequest.of(page - 1, 10));
-        var result = products.map(productMapper::map);
 
-        return result;
+        // Создаем объект PageRequest с пагинацией
+        var pageRequest = PageRequest.of(page - 1, 10);  // Пагинация, 10 элементов на странице
 
-    }
+        // Получаем страницу с продуктами
+        var pageResult = productRepository.findAll(spec, pageRequest);
+
+        // Преобразуем список продуктов в DTO и возвращаем только список
+        return pageResult.getContent().stream()
+                         .map(productMapper::map)
+                         .collect(Collectors.toList());
+}
     // END
 
     @PostMapping("")
