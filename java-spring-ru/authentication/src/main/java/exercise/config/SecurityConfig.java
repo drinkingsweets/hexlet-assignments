@@ -31,20 +31,22 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService userService;
 
+    @Autowired
+    private JwtDecoder jwtDecoder;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .requestMatchers(HttpMethod.POST, "/articles/**").permitAll() // Allow unauthenticated POST access
-                .anyRequest().authenticated() // Require authentication for all other requests
-            .and()
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless authentication
-            .exceptionHandling(exception -> exception
-                .authenticationEntryPoint((request, response, authException) -> {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"); // Send 401 Unauthorized
-                })
-            );
-        return http.build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
+            throws Exception {
+        return http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2ResourceServer((rs) -> rs.jwt((jwt) -> jwt.decoder(jwtDecoder)))
+                .httpBasic(Customizer.withDefaults())
+                .build();
     }
 
     @Bean
